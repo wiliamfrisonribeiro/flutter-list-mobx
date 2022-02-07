@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:liste_mobx/stores/login_store.dart';
 import 'package:liste_mobx/widgets/custom_icon_button.dart';
 import 'package:liste_mobx/widgets/custom_text_field.dart';
-
 
 import 'list_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  LoginStore loaginStore = LoginStore();
 
   @override
   Widget build(BuildContext context) {
@@ -32,52 +33,47 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: <Widget>[
                     CustomTextField(
                       hint: 'E-mail',
-                      prefix: Icon(Icons.account_circle),
+                      prefix: const Icon(Icons.account_circle),
                       textInputType: TextInputType.emailAddress,
-                      onChanged: (email){
-
-                      },
+                      onChanged: loaginStore.setEmail,
                       enabled: true,
                     ),
-                    const SizedBox(height: 16,),
+                    const SizedBox(
+                      height: 16,
+                    ),
                     CustomTextField(
                       hint: 'Senha',
-                      prefix: Icon(Icons.lock),
+                      prefix: const Icon(Icons.lock),
                       obscure: true,
-                      onChanged: (pass){
-
-                      },
+                      onChanged: loaginStore.sePassword,
                       enabled: true,
                       suffix: CustomIconButton(
                         radius: 32,
                         iconData: Icons.visibility,
-                        onTap: (){
-
-                        },
+                        onTap: () {},
                       ),
                     ),
-                    const SizedBox(height: 16,),
-                    SizedBox(
-                      height: 44,
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Observer(builder: (_) {
+                      return SizedBox(
+                        height: 44,
+                        child: ElevatedButton(
+                          child: const Text('Login'),
+                          onPressed: loaginStore.isFormValid
+                              ? () {
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (context) => ListScreen()));
+                                }
+                              : null,
                         ),
-                        child: Text('Login'),
-                        color: Theme.of(context).primaryColor,
-                        disabledColor: Theme.of(context).primaryColor.withAlpha(100),
-                        textColor: Colors.white,
-                        onPressed: (){
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context)=>ListScreen())
-                          );
-                        },
-                      ),
-                    )
+                      );
+                    })
                   ],
                 ),
-              )
-          ),
+              )),
         ),
       ),
     );
