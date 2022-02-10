@@ -3,10 +3,8 @@ import 'package:liste_mobx/ui/login_screen.dart';
 
 void main() => runApp(MyApp());
 
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +13,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Colors.deepPurpleAccent,
-      
         scaffoldBackgroundColor: Colors.deepPurpleAccent,
       ),
       home: LoginScreen(),

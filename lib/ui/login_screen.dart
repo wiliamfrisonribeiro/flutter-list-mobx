@@ -15,20 +15,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   LoginStore loaginStore = LoginStore();
 
-  ReactionDisposer? disposer;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    disposer = reaction((_) => loaginStore.loading, (loggedIn) {
-      if (loggedIn != null) {
-        Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: (_) => ListScreen()));
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -90,9 +76,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: loaginStore.isFormValid
                               ? () {
                                   loaginStore.login();
-                                  /*  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (context) => ListScreen())); */
+                                  if (loaginStore.loggedIn) {
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ListScreen()));
+                                  }
                                 }
                               : null,
                         ),
@@ -104,12 +93,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    disposer!();
-    super.dispose();
   }
 }
